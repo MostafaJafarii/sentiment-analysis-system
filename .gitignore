@@ -1,27 +1,52 @@
-# ===== Virtual Environment =====
+# Virtual Environment
 .venv/
 venv/
 
-# ===== PyCharm =====
-.idea/
-
-# ===== Python Cache =====
+# Python Cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# ===== Data (very important in ML projects) =====
-data/raw/
-data/processed/
-data/models/
+# PyCharm
+.idea/
 
-# ===== Logs =====
-*.log
-
-# ===== Jupyter =====
+# Jupyter
 .ipynb_checkpoints/
 
-# ===== OS Files =====
+# Environment Variables
+.env
+
+# Dataset Files
+data/raw/
+data/interim/
+data/processed/
+
+# Generated Reports
+reports/plots/
+
+# Model Files (later phases)
+models/
+*.joblib
+*.pkl
+
+# Logs
+logs/
+*.log
+
+# OS Files
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Testing Cache
+.pytest_cache/
+
+# Coverage Reports
+.coverage
+htmlcov/
+
+# Build Files
+build/
+dist/
+*.egg-info/
