@@ -19,10 +19,12 @@ def read_reviews(folder_path: Path, sentiment: str) -> pd.DataFrame:
             encoding="utf-8"
         )
 
+        label = 1 if sentiment == "positive" else 0
+
         reviews.append(
             {
                 "review": review_text,
-                "sentiment": sentiment
+                "sentiment": label
             }
         )
 
