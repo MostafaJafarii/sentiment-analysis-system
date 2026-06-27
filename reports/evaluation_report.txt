@@ -1,0 +1,45 @@
+======================================================================
+Movie Review Sentiment Analysis
+Evaluation Report
+======================================================================
+
+Generated : 2026-06-27 07:29:23.688909
+Python    : 3.14.0
+
+======================================================================
+Best Model
+======================================================================
+Name       : logistic_regression
+Accuracy   : 0.8830
+Precision  : 0.8704
+Recall     : 0.9000
+F1 Score   : 0.8850
+
+======================================================================
+All Models
+======================================================================
+
+logistic_regression
+Accuracy : 0.8830
+Precision: 0.8704
+Recall   : 0.9000
+F1 Score : 0.8850
+
+naive_bayes
+Accuracy : 0.8584
+Precision: 0.8478
+Recall   : 0.8736
+F1 Score : 0.8605
+
+linear_svm
+Accuracy : 0.8746
+Precision: 0.8718
+Recall   : 0.8784
+F1 Score : 0.8751
+
+random_forest
+Accuracy : 0.8512
+Precision: 0.8543
+Recall   : 0.8468
+F1 Score : 0.8505
+
