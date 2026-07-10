@@ -1,37 +1,77 @@
+"""
+Tests for model training.
+"""
+
 import joblib
 import pandas as pd
+
+from sklearn.linear_model import LogisticRegression
+
+from src.config import (
+    X_TRAIN_FILE,
+    Y_TRAIN_FILE,
+)
 
 from src.models.model_factory import get_models
 from src.models.trainer import train_model
 
 
-def main():
+def test_train_logistic_regression():
+    """
+    Logistic Regression should train successfully.
+    """
 
-    X_train = joblib.load(
-        "data/processed/X_train.joblib"
+    x_train = joblib.load(
+        X_TRAIN_FILE
     )
 
     y_train = pd.read_csv(
-        "data/processed/y_train.csv"
+        Y_TRAIN_FILE
     )["sentiment"]
 
-    models = get_models()
-
-    model = models["logistic_regression"]
+    model = get_models()[
+        "logistic_regression"
+    ]
 
     trained_model = train_model(
         model,
-        X_train,
+        x_train,
         y_train
     )
 
-    print()
+    assert isinstance(
+        trained_model,
+        LogisticRegression
+    )
 
-    print("Model Type:")
+    # Scikit-Learn models have coef_ after fitting
+    assert hasattr(
+        trained_model,
+        "coef_"
+    )
 
-    print(type(trained_model))
 
+def test_train_returns_same_instance():
+    """
+    Trainer should return the fitted model instance.
+    """
 
-if __name__ == "__main__":
+    x_train = joblib.load(
+        X_TRAIN_FILE
+    )
 
-    main()
+    y_train = pd.read_csv(
+        Y_TRAIN_FILE
+    )["sentiment"]
+
+    model = get_models()[
+        "logistic_regression"
+    ]
+
+    trained_model = train_model(
+        model,
+        x_train,
+        y_train
+    )
+
+    assert trained_model is model

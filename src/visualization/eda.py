@@ -1,47 +1,61 @@
 """
-Exploratory Data Analysis.
+Run complete Exploratory Data Analysis (EDA).
 """
 
-from pathlib import Path
-
-import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
+
+from src.config import TRAIN_DATA_FILE
+from src.logger import get_logger
+
+from src.visualization.statistics import (
+    add_review_statistics,
+    print_summary,
+)
+
+from src.visualization.eda_plots import (
+    generate_all_eda_plots,
+)
+
+logger = get_logger(__name__)
 
 
-def run_eda():
+def run_eda() -> None:
+    """
+    Execute the complete Exploratory Data Analysis (EDA) pipeline.
+    """
 
-    train_df = pd.read_csv(
-        "data/interim/train.csv"
+    logger.info(
+        "Loading training dataset..."
     )
 
-    print(train_df.head())
-
-    print()
-
-    print(train_df["sentiment"].value_counts())
-
-    Path("reports/plots").mkdir(
-        parents=True,
-        exist_ok=True
+    dataset = pd.read_csv(
+        TRAIN_DATA_FILE
     )
 
-    plt.figure(figsize=(8, 5))
-
-    sns.countplot(
-        data=train_df,
-        x="sentiment"
+    logger.info(
+        "Loaded %d reviews.",
+        len(dataset)
     )
 
-    plt.title(
-        "Sentiment Distribution"
+    logger.info(
+        "Calculating review statistics..."
     )
 
-    plt.savefig(
-        "reports/plots/sentiment_distribution.png"
+    dataset = add_review_statistics(
+        dataset
     )
 
-    plt.show()
+    print_summary(
+        dataset
+    )
+
+    generate_all_eda_plots(
+        dataset
+    )
+
+    logger.info(
+        "EDA completed successfully."
+    )
 
 
 if __name__ == "__main__":

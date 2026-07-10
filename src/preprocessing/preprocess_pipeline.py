@@ -2,108 +2,157 @@
 Preprocessing pipeline.
 """
 
-from pathlib import Path
-
-import pandas as pd
 import joblib
+import pandas as pd
+
+from src.config import (
+    TRAIN_DATA_FILE,
+    VALIDATION_DATA_FILE,
+    TEST_DATA_FILE,
+    PROCESSED_DATA_DIRECTORY,
+    TFIDF_VECTORIZER_FILE,
+    X_TRAIN_FILE,
+    X_VALIDATION_FILE,
+    X_TEST_FILE,
+    Y_TRAIN_FILE,
+    Y_VALIDATION_FILE,
+    Y_TEST_FILE
+)
+from src.logger import get_logger
 
 from src.preprocessing.text_cleaner import clean_text
 from src.preprocessing.feature_extractor import create_tfidf
 
 
-def run_preprocessing():
+logger = get_logger(__name__)
+
+
+def clean_dataframe(dataframe: pd.DataFrame) -> pd.DataFrame:
+    """
+    Clean all reviews in a dataframe.
+    """
+
+    dataframe["review"] = (
+        dataframe["review"]
+        .astype(str)
+        .apply(clean_text)
+    )
+
+    return dataframe
+
+
+def save_labels(
+    train_df: pd.DataFrame,
+    validation_df: pd.DataFrame,
+    test_df: pd.DataFrame
+) -> None:
+    """
+    Save sentiment labels.
+    """
+
+    train_df["sentiment"].to_csv(
+        Y_TRAIN_FILE,
+        index=False
+    )
+
+    validation_df["sentiment"].to_csv(
+        Y_VALIDATION_FILE,
+        index=False
+    )
+
+    test_df["sentiment"].to_csv(
+        Y_TEST_FILE,
+        index=False
+    )
+
+
+def run_preprocessing() -> None:
+    """
+    Execute preprocessing pipeline.
+    """
+
+    logger.info(
+        "Loading datasets..."
+    )
 
     train_df = pd.read_csv(
-        "data/interim/train.csv"
+        TRAIN_DATA_FILE
     )
 
     validation_df = pd.read_csv(
-        "data/interim/validation.csv"
+        VALIDATION_DATA_FILE
     )
 
     test_df = pd.read_csv(
-        "data/interim/test.csv"
+        TEST_DATA_FILE
     )
 
-    print("Cleaning train dataset...")
-
-    train_df["review"] = (
-        train_df["review"]
-        .astype(str)
-        .apply(clean_text)
+    logger.info(
+        "Cleaning reviews..."
     )
 
-    validation_df["review"] = (
-        validation_df["review"]
-        .astype(str)
-        .apply(clean_text)
+    train_df = clean_dataframe(train_df)
+
+    validation_df = clean_dataframe(
+        validation_df
     )
 
-    test_df["review"] = (
-        test_df["review"]
-        .astype(str)
-        .apply(clean_text)
+    test_df = clean_dataframe(
+        test_df
+    )
+
+    logger.info(
+        "Creating TF-IDF features..."
     )
 
     vectorizer = create_tfidf()
 
-    X_train = vectorizer.fit_transform(
+    x_train = vectorizer.fit_transform(
         train_df["review"]
     )
 
-    X_validation = vectorizer.transform(
+    x_validation = vectorizer.transform(
         validation_df["review"]
     )
 
-    X_test = vectorizer.transform(
+    x_test = vectorizer.transform(
         test_df["review"]
     )
 
-    output_dir = Path(
-        "data/processed"
-    )
-
-    output_dir.mkdir(
+    PROCESSED_DATA_DIRECTORY.mkdir(
         parents=True,
         exist_ok=True
     )
 
     joblib.dump(
         vectorizer,
-        output_dir / "tfidf_vectorizer.joblib"
+        TFIDF_VECTORIZER_FILE
     )
 
     joblib.dump(
-        X_train,
-        output_dir / "X_train.joblib"
+        x_train,
+        X_TRAIN_FILE
     )
 
     joblib.dump(
-        X_validation,
-        output_dir / "X_validation.joblib"
+        x_validation,
+        X_VALIDATION_FILE
     )
 
     joblib.dump(
-        X_test,
-        output_dir / "X_test.joblib"
+        x_test,
+        X_TEST_FILE
     )
 
-    train_df["sentiment"].to_csv(
-        output_dir / "y_train.csv",
-        index=False
+    save_labels(
+        train_df,
+        validation_df,
+        test_df
     )
 
-    validation_df["sentiment"].to_csv(
-        output_dir / "y_validation.csv",
-        index=False
+    logger.info(
+        "Preprocessing completed successfully."
     )
-
-    test_df["sentiment"].to_csv(
-        output_dir / "y_test.csv",
-        index=False
-    )
-
-    print("Preprocessing completed.")
 
 
 if __name__ == "__main__":

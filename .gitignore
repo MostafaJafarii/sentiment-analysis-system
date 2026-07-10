@@ -1,52 +1,71 @@
+# ===============================
 # Virtual Environment
+# ===============================
+
 .venv/
 venv/
 
+# ===============================
 # Python Cache
+# ===============================
+
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# PyCharm
+# ===============================
+# IDE
+# ===============================
+
 .idea/
 
+# ===============================
 # Jupyter
+# ===============================
+
 .ipynb_checkpoints/
 
+# ===============================
 # Environment Variables
+# ===============================
+
 .env
 
-# Dataset Files
-data/raw/
-data/interim/
-data/processed/
+# ===============================
+# Generated Models
+# ===============================
 
-# Generated Reports
-reports/plots/
+models/*.joblib
+models/*.pkl
 
-# Model Files (later phases)
-models/
-*.joblib
-*.pkl
-
+# ===============================
 # Logs
+# ===============================
+
 logs/
 *.log
 
-# OS Files
-.DS_Store
-Thumbs.db
-desktop.ini
+# ===============================
+# Testing
+# ===============================
 
-# Testing Cache
 .pytest_cache/
-
-# Coverage Reports
 .coverage
 htmlcov/
 
-# Build Files
+# ===============================
+# Build
+# ===============================
+
 build/
 dist/
 *.egg-info/
+
+# ===============================
+# Operating System
+# ===============================
+
+.DS_Store
+Thumbs.db
+desktop.ini
