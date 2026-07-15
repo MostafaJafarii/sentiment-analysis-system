@@ -29,12 +29,43 @@ RANDOM_FOREST_ESTIMATORS = 200
 RANDOM_FOREST_N_JOBS = -1
 
 # =============================================================================
+# Supported Models
+# =============================================================================
+
+AVAILABLE_MODELS = {
+    "logistic_regression": "Logistic Regression",
+    "naive_bayes": "Naive Bayes",
+    "svm": "Support Vector Machine",
+    "random_forest": "Random Forest"
+}
+
+DEFAULT_MODEL = "best_model"
+
+# =============================================================================
 # TF-IDF Settings
 # =============================================================================
 
 TFIDF_MAX_FEATURES = 10000
 
 TFIDF_NGRAM_RANGE = (1, 2)
+
+# =============================================================================
+# API Settings
+# =============================================================================
+
+API_HOST = "0.0.0.0"
+
+API_PORT = 5000
+
+API_DEBUG = True
+
+# =============================================================================
+# Prediction Settings
+# =============================================================================
+
+ENABLE_CONFIDENCE_SCORE = True
+
+ENABLE_PREDICTION_TIME = True
 
 # =============================================================================
 # Data Directories
@@ -161,6 +192,16 @@ DEFAULT_FIGURE_DPI = 300
 MATPLOTLIB_STYLE = "ggplot"
 
 MAX_REVIEW_LENGTH = 800
+
+# =============================================================================
+# UI Settings
+# =============================================================================
+
+UI_TITLE = "IMDB Sentiment Analysis"
+
+UI_SUBTITLE = "Movie Review Sentiment Prediction System"
+
+UI_MAX_REVIEW_LENGTH = 5000
 
 # =============================================================================
 # Logs

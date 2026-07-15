@@ -27,9 +27,7 @@ from src.models.report_manager import (
     create_evaluation_report
 )
 
-
 logger = get_logger(__name__)
-
 
 def load_processed_data():
     """
@@ -63,7 +61,6 @@ def load_processed_data():
         y_validation
     )
 
-
 def main() -> None:
     """
     Train, evaluate and compare all machine learning models.
@@ -87,6 +84,11 @@ def main() -> None:
 
     for model_name, model in models.items():
 
+        logger.info(
+            "Training %s...",
+            model_name
+        )
+
         trained_model = train_model(
             model,
             x_train,
@@ -99,9 +101,14 @@ def main() -> None:
             y_validation
         )
 
-        save_model(
+        saved_path = save_model(
             trained_model,
             model_name
+        )
+
+        logger.info(
+            "Model saved to %s",
+            saved_path
         )
 
         results[model_name] = {
@@ -165,7 +172,6 @@ def main() -> None:
     logger.info(
         "Training pipeline completed successfully."
     )
-
 
 if __name__ == "__main__":
     main()

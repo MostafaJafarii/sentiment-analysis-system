@@ -7,33 +7,39 @@ from pathlib import Path
 import joblib
 from sklearn.base import BaseEstimator
 
-from src.config import MODELS_DIRECTORY
-from src.logger import get_logger
+from src.config import (
+    MODELS_DIRECTORY,
+    BEST_MODEL_FILE
+)
 
+from src.logger import get_logger
 
 logger = get_logger(__name__)
 
+# =============================================================================
+# Supported Models
+# =============================================================================
+
+AVAILABLE_MODELS = {
+
+    "logistic_regression": "Logistic Regression",
+
+    "naive_bayes": "Naive Bayes",
+
+    "linear_svm": "Support Vector Machine",
+
+    "random_forest": "Random Forest"
+
+}
+
+# =============================================================================
+# Save Model
+# =============================================================================
 
 def save_model(
     model: BaseEstimator,
     model_name: str
 ) -> Path:
-    """
-    Save a trained machine learning model.
-
-    Parameters
-    ----------
-    model : BaseEstimator
-        Trained machine learning model.
-
-    model_name : str
-        Model file name.
-
-    Returns
-    -------
-    Path
-        Path to the saved model.
-    """
 
     MODELS_DIRECTORY.mkdir(
         parents=True,
@@ -63,27 +69,28 @@ def save_model(
     return model_path
 
 
+# =============================================================================
+# Load Model
+# =============================================================================
+
 def load_model(
     model_name: str
 ) -> BaseEstimator:
-    """
-    Load a trained machine learning model.
 
-    Parameters
-    ----------
-    model_name : str
-        Model file name.
+    if model_name == "best_model":
 
-    Returns
-    -------
-    BaseEstimator
-        Loaded machine learning model.
-    """
+        model_path = BEST_MODEL_FILE
 
-    model_path = (
-        MODELS_DIRECTORY /
-        f"{model_name}.joblib"
-    )
+    else:
+
+        validate_model_name(
+            model_name
+        )
+
+        model_path = (
+            MODELS_DIRECTORY /
+            f"{model_name}.joblib"
+        )
 
     if not model_path.exists():
 
@@ -110,3 +117,51 @@ def load_model(
     )
 
     return model
+
+
+# =============================================================================
+# Validation
+# =============================================================================
+
+def validate_model_name(
+    model_name: str
+) -> None:
+
+    if model_name not in AVAILABLE_MODELS:
+
+        raise ValueError(
+            f"Unsupported model: {model_name}"
+        )
+
+
+# =============================================================================
+# Information
+# =============================================================================
+
+def get_available_models() -> dict:
+
+    return AVAILABLE_MODELS.copy()
+
+
+def get_available_model_names() -> list[str]:
+
+    return list(
+        AVAILABLE_MODELS.keys()
+    )
+
+
+def get_model_display_name(
+    model_name: str
+) -> str:
+
+    if model_name == "best_model":
+
+        return "Best Model"
+
+    validate_model_name(
+        model_name
+    )
+
+    return AVAILABLE_MODELS[
+        model_name
+    ]
