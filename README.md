@@ -792,7 +792,7 @@ pip install -r requirements.txt
 Run the NLTK downloader.
 
 ```bash
-python download_nltk.py
+python -m src.preprocessing.download_nltk
 ```
 
 Required resources include:
