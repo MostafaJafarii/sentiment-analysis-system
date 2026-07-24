@@ -480,9 +480,6 @@ async function requestPrediction(payload) {
 
 predictButton.addEventListener("click", async () => {
 
-    // ------------------------------------------------------------
-    // همیشه قبل از هر کاری پیام‌ها و نتیجه قبلی پاک شوند
-    // ------------------------------------------------------------
 
     hideMessages();
 
@@ -492,7 +489,6 @@ predictButton.addEventListener("click", async () => {
 
     const review = validateReview();
 
-    // اگر متن وارد نشده، فقط خطا نشان بده
     if (review === null) {
 
         return;
