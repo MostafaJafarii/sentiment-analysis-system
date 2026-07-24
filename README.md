@@ -147,10 +147,7 @@ sentiment-analysis-system/
 │   └── website.png
 │
 ├── data/
-│   ├── raw/
 │   └── processed/
-│
-├── logs/
 │
 ├── models/
 │   ├── best_model.joblib
